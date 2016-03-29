@@ -3,24 +3,42 @@ window.onload = function(){
   var url = "https://restcountries.eu/rest/v1";
   var request = new XMLHttpRequest();
   request.open("GET", url);
+
+  var index;
+  var countries;
+
   request.onload = function(){
     if(request.status === 200){
-      console.log('got the data success');
       var jsonString = request.responseText;
       countries = JSON.parse(jsonString);
-
-    index = JSON.parse(localStorage.getItem("last_country_index"));
     }
-
+    //create the options
     for (var i = 0; i < countries.length; i++){
     var option = document.createElement('option');
     option.value = i;
     option.innerText = countries[i].name;
     dropDown.appendChild(option);
+    };
+    dropDown.value = localStorage.getItem("lastCountryIndex");
+  }
 
-    dropDown.value = index;
-  };
+  var dropDown = document.createElement('select');
+  var main = document.querySelector('.main');
+  // console.log('main', main);
+  main.appendChild(dropDown);
 
+  dropDown.onchange = function() {
+    index = dropDown.value;
+    updatePage(index);
+    localStorage.setItem("lastCountryIndex", index);
+   }
+
+  var updatePage = function(index) {
+    showName.innerHTML = "Country Name : " + countries[index].name;
+    showPopulation.innerHTML = "Population : " + countries[index].population;
+    showCapital.innerHTML = "Capital City : " + countries[index].capital;
+    showBorderCountryName.innerHTML = "Bordering Countries : " + showBordering(index)
+  }
 
   var showName = document.createElement('p');
   var showPopulation = document.createElement('p');
@@ -33,35 +51,10 @@ window.onload = function(){
   box.appendChild(showCapital);
   box.appendChild(showBorderCountryName);
 
-
-  showBordering(index);
-
-  var updatePage = function(index){
-   showName.innerHTML = "Country Name : " + countries[index].name;
-   showPopulation.innerHTML = "Population : " + countries[index].population;
-   showCapital.innerHTML = "Capital City : " + countries[index].capital;
-   showBorderCountryName.innerHTML = "Bordering Countries : " + showBordering(index)
-  }
-
-  dropDown.onchange =function(){
-    index = dropDown.value;
-    updatePage(index);
-   }
-
-    localStorage.setItem("last_country_index", JSON.stringify(index));
-  }
-
-
-  request.send();
-
-  var dropDown = document.createElement('select');
-  var main = document.querySelector('.main');
-  // console.log('main', main);
-  main.appendChild(dropDown);
-}
   var showBordering = function(index){
-    var borderCode = countries[index].borders;
+    var borderCode = countries[index].borders || null;
     borderCountries = borderCode.map(getNameFromCode);
+    console.log(borderCountries);
     return borderCountries;
   }
 
@@ -73,11 +66,6 @@ window.onload = function(){
     }
   };
 
+  request.send();
 
-
-
-
-// var countries;
-
-
-// borderCode.innerHTML = countries[index].name
+}

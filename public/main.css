@@ -1,3 +1,7 @@
+body{
+  background-image: url(./globe-background.jpg);
+}
+
 p {
   text-align: center;
 }
@@ -6,6 +10,11 @@ p {
   background-color: deepskyblue;
   width: 500px;
   margin-left: 30%;
-  margin-top: 10%;
+  margin-top: 130px;
+  opacity: 0.8;
+}
+
+select {
+text-align: center;
 }
 
