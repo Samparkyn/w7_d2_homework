@@ -1,5 +1,6 @@
 body{
   background-image: url(./globe-background.jpg);
+  text-align: center;
 }
 
 p {
@@ -16,5 +17,6 @@ p {
 
 select {
 text-align: center;
+background-color: gold;
 }
 
